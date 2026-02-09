@@ -4,7 +4,6 @@ and returning readable text. When the program is executed with no arguments, thi
 the program should provide a list of files available (as provided from Team Member B),
 along with a corresponding number for selection.
 
------------
 Class Structure:
 UserInterface.java
 - Receives command-line arguments (passed from Team Member C)
@@ -12,9 +11,8 @@ UserInterface.java
 - Validates all user/scanner input and exits on any error
 - Returns a validated request (fileId + optional keyArg) back to Team Member C
 
------------
 Methods:
-processCommandLine(String[] args)
+commandLine(String[] args)
     if args.length > 0, call and return parseDirectFileRequest(args)
     otherwise call and return interactiveFileSelection()
 
@@ -25,7 +23,7 @@ DirectFileRequest(String[] args)
     error if args.length > 2
     Return UiRequest(fileId, keyArg)
 
-interactiveFileSelection()
+fileSelection()
     listFiles()
     Query user for the fileId via Scanner
     Validate fileId against the displayed list
@@ -46,7 +44,6 @@ exitWithError(String message)
     Print error message
     Terminate program immediately (System.exit(1))
 
------------
 Error Handling:
 - Non-numeric file IDs
 - Blank input / whitespace-only input
@@ -55,7 +52,6 @@ Error Handling:
 - Scanner exceptions / EOF / unexpected input
 On any error: print a clear message and exit immediately.
 
------------
 Tests: 
 1. No args, multiple files: interactiveFileSelection runs, list prints, valid selection returns
 2. Invalid id input (letters / blank / whitespace) → exits with error
