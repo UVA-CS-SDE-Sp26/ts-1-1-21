@@ -1,0 +1,51 @@
+Prompt:
+You are responsible for the command line interface used by the user to run the program.
+Create a file, userinterface.txt, in the docs folder to document the user interface.
+(the command prompt options)
+
+Class Structure:
+UserInterface.java
+- Receives command-line arguments (passed from Team Member C)
+- Determines which request path to run (with ID vs. no ID)
+- Validates Id and cipherKey argument and returns it under new object UiRequest
+- Returns a validated request (fileId + optional keyArg) back to Team Member C
+
+Extra class:
+UiRequest (IMPORTANT FOR EACH MEMBER)
+- contains a fileID variable
+- contains a cipherKey variable
+- has getters for each variable
+- validates the existence of each variable
+
+Methods:
+
+UiRequest parseArgs(String[] args)
+- Inspects args.length
+- Validates and sends the argument count
+- Validates the format of our fileID
+- Sets our cipher key if necessary
+- returns a UiRequest object with our fileID variables and cipher key variables
+
+printFileList(List<String> files)
+- prints each file with a number (fileID)
+
+printFileContents(String contents)
+- prints the contents of the file requested
+
+printError(String message)
+- prints a error message for the user
+- does not exit the program, just controls what user sees
+
+Error Handling:
+- Non-numeric file IDs
+- Blank input / whitespace-only input
+- ID not in list
+On any error: send to member b to exit the program
+
+Tests: 
+1. No args, multiple files: interactiveFileSelection runs, list prints, valid selection returns
+2. Invalid id input (letters / blank / whitespace) → exits with error
+3. Out-of-range id (not in list) → exits with error
+4. Direct id arg valid (e.g., 01) → parseDirectFileRequest returns correct UiRequest
+5. Direct id arg invalid (e.g., -1, abc) → exits with error
+6. Too many args (if enforced) → exits with error

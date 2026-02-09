@@ -1,0 +1,31 @@
+Prompt:
+responsible for connecting the command line to the file handler, requesting file contents
+and returning readable text. When the program is executed with no arguments, this part of
+the program should provide a list of files available, as provided from the work of
+Team Member B, along with a corresponding number.
+-------------
+Class Structure:
+ProgramControl.java
+-Main class draws on methods from this
+-This draws on methods from FileHandler, UserInterface
+-Methods :
+    requestFile(int index)
+        if index < 0, call and return requestFileWithoutIndex
+        otherwise call and return requestFileWithIndex(index)
+    requestFileWithIndex(int index)
+        Use the index to request the file contents from FileHandler
+        Return file contents as String
+    requestFileWithoutIndex()
+        listFiles()
+        Query UserInterface to get the index
+        Call and return requestFileWithIndex(index)
+    listFiles()
+        Query FileHandler for files list
+        Print out files list, displaying indices for each
+-------------
+Tests: //TO DO
+1. No input, multiple files: check that requestFileWithoutIndex runs as intended, prints files list
+2. -1 index
+3. 0 index
+4. 3 index
+5. MAX index
