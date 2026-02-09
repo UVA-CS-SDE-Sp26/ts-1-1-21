@@ -1,56 +1,46 @@
 Prompt:
-responsible for connecting the command line to the file handler, requesting file contents,
-and returning readable text. When the program is executed with no arguments, this part of
-the program should provide a list of files available (as provided from Team Member B),
-along with a corresponding number for selection.
+You are responsible for the command line interface used by the user to run the program.
+Create a file, userinterface.txt, in the docs folder to document the user interface.
+(the command prompt options)
 
 Class Structure:
 UserInterface.java
 - Receives command-line arguments (passed from Team Member C)
 - Determines which request path to run (with ID vs. no ID)
-- Validates all user/scanner input and exits on any error
+- Validates Id and cipherKey argument and returns it under new object UiRequest
 - Returns a validated request (fileId + optional keyArg) back to Team Member C
 
+Extra class:
+UiRequest (IMPORTANT FOR EACH MEMBER)
+- contains a fileID variable
+- contains a cipherKey variable
+- has getters for each variable
+- validates the existence of each variable
+
 Methods:
-commandLine(String[] args)
-    if args.length > 0, call and return parseDirectFileRequest(args)
-    otherwise call and return interactiveFileSelection()
 
-DirectFileRequest(String[] args)
-    Read fileId from args[0]
-    If args.length == 2, store keyArg from args[1]
-    Validate fileId format
-    error if args.length > 2
-    Return UiRequest(fileId, keyArg)
+UiRequest parseArgs(String[] args)
+- Inspects args.length
+- Validates and sends the argument count
+- Validates the format of our fileID
+- Sets our cipher key if necessary
+- returns a UiRequest object with our fileID variables and cipher key variables
 
-fileSelection()
-    listFiles()
-    Query user for the fileId via Scanner
-    Validate fileId against the displayed list
-    Return UiRequest(fileId, null)
+printFileList(List<String> files)
+- prints each file with a number (fileID)
 
-listFiles()
-    Query FileHandler/Team Member B for the available files list
-    Print out files list, displaying indices for each selectable file
-    Return the set/list of valid fileIds for validation
+printFileContents(String contents)
+- prints the contents of the file requested
 
-validateFileId(String raw, Set<String> validIds)
-    Trim whitespace
-    Ensure numeric-only (and correct length if enforced)
-    Ensure membership in validIds when provided
-    Return normalized fileId
-
-exitWithError(String message)
-    Print error message
-    Terminate program immediately (System.exit(1))
+printError(String message)
+- prints a error message for the user
+- does not exit the program, just controls what user sees
 
 Error Handling:
 - Non-numeric file IDs
 - Blank input / whitespace-only input
 - ID not in list
-- Too many command-line arguments (if enforced)
-- Scanner exceptions / EOF / unexpected input
-On any error: print a clear message and exit immediately.
+On any error: send to member b to exit the program
 
 Tests: 
 1. No args, multiple files: interactiveFileSelection runs, list prints, valid selection returns
