@@ -1,0 +1,54 @@
+Building the deciphering feature
+
+
+Description: 2 files, one for the actual text, one for the ciphered text. 2 functions,
+one to load the files, and one to decipher the text.
+
+
+The keys in ciphers/key.txt, goal: validate the key is correct, and provide a function that takes ciphered text and returns readable text.
+
+
+Pseudocode below!
+
+
+Function loadKey(key-> filepath):
+   lines = read all lines from key file
+
+
+  edge cases:
+  if lines.count !=2:
+       Error "must be 2 lines"
+
+
+  actual = lines[0]   // real letters
+  cipher = lines[1]   // ciphered letters
+
+
+  if length(actual) != length(cipher):
+       Error "must be same length"
+
+
+  if actual has dups or cipher has dups:
+       Error "must not have duplicates"
+
+  Return (actual, cipher)
+
+
+Function decipher(text, actual, cipher):
+   result = empty string
+
+
+   for each char in text:
+       index = position of char in cipher  // finding char in cipher line
+
+
+       if index exists (index >= 0):
+           result += actual[index] // replacing char with actual char
+       else:
+           result += char
+
+
+   return result
+
+
+
