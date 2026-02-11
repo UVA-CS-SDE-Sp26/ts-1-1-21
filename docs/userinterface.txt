@@ -3,6 +3,14 @@ You are responsible for the command line interface used by the user to run the p
 Create a file, userinterface.txt, in the docs folder to document the user interface.
 (the command prompt options)
 
+Purpose:
+Take user input provided by program control calling parseArgs() method, validate that
+our FileID is in the correct format and useable and return a UiRequest Object that
+contains #fileID and #cipherKey so that they are easily callable for other team members.
+Also provides a callable printFiles() function that can be called by program control
+in the event that no arguments are provided. Provides print error functions for program
+control.
+
 Class Structure:
 UserInterface.java
 - Receives command-line arguments (passed from Team Member C)

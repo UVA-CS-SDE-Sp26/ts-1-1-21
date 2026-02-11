@@ -13,12 +13,14 @@ public class UserInterface {
         if (args.length == 1){
             //validates the id and if invalid will throw illegal argument exception and cancel the rest of the function
             validateFileID(args[0]);
+            //post validation passes a new UiRequest Object with just setting the FileID
             return new UiRequest(args[0],null);
         }
         //both arguments passed
         if (args.length == 2){
             //same validation
             validateFileID(args[0]);
+            //creates a new UiRequest Object with both arguments
             return new UiRequest(args[0],args[1]);
         }
         //if there are too many arguments also throw an exception
