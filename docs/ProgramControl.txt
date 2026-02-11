@@ -10,15 +10,13 @@ ProgramControl.java
 -This draws on methods from FileHandler, UserInterface
 -Methods :
     requestFile(int index)
-        if index < 0, call and return requestFileWithoutIndex
-        otherwise call and return requestFileWithIndex(index)
-    requestFileWithIndex(int index)
-        Use the index to request the file contents from FileHandler
-        Return file contents as String
-    requestFileWithoutIndex()
-        listFiles()
-        Query UserInterface to get the index
-        Call and return requestFileWithIndex(index)
+        With index:
+            Use the index to request the file contents from FileHandler
+            Return file contents as String
+        Without index:
+            listFiles()
+            Query UserInterface to get the index
+            Call and return requestFileWithIndex(index)
     listFiles()
         Query FileHandler for files list
         Print out files list, displaying indices for each

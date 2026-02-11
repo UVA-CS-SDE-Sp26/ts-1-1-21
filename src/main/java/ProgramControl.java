@@ -4,18 +4,16 @@ public class ProgramControl implements ProgramCtrl{
 
     @Override
     public String requestFile(int index) {
-        return index < 0 ? requestFileWithoutIndex() : requestFileWithIndex(index);
-    }
+        if(index < 0) {
+            //listFiles();
+            //index =?
+        }
 
-    public String requestFileWithIndex(int index) {
         return "";
     }
 
-    public String requestFileWithoutIndex() {
-        return "";
-    }
 
-    public void listFiles() {
+    private void listFiles() {
 
     }
 }
