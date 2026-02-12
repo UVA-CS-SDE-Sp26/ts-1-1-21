@@ -30,7 +30,7 @@ public class fileHandler implements fileHandlerInterface{
             return;
         }
         File[] files = folder.listFiles();
-        int count = 0;
+        int count = 1;
 
         if (files != null) {
             Arrays.sort(files);
