@@ -8,7 +8,7 @@ public class TopSecret {
             System.out.println("Too many arguments");
             java.lang.System.exit(1);
         }
-        ProgramControl control = new ProgramControl();
+        ProgramControl control = new ProgramControl(new fileHandler());
         String fileContents = control.requestFile(args);
     }
 

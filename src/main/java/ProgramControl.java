@@ -4,11 +4,11 @@
  * This class is responsible for connecting the user interface to the file handler
  */
 
-public class ProgramControl implements ProgramCtrl{
+public class ProgramControl implements ProgramControlInterface{
     private final fileHandler handler;
 
-    public ProgramControl() {
-        this.handler = new fileHandler();
+    public ProgramControl(fileHandler handler) {
+        this.handler = handler;
     }
 
     //returns the deciphered contents of the user-requested file
@@ -25,7 +25,7 @@ public class ProgramControl implements ProgramCtrl{
     }
 
     //prints a list of available files
-    private void listFiles() {
+    public void listFiles() {
         System.out.println(handler.readFiles());
     }
 }

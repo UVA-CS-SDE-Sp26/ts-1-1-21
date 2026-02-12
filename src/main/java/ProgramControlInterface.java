@@ -3,6 +3,7 @@
  * 2/5/2026
  */
 
-public interface ProgramCtrl {
+public interface ProgramControlInterface {
     String requestFile(String[] args);
+    void listFiles();
 }
