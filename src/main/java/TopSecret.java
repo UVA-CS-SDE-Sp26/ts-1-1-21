@@ -9,7 +9,7 @@ public class TopSecret {
             java.lang.System.exit(1);
         }
         ProgramControl control = new ProgramControl();
-        String fileContents = control.requestFile(args.length > 0 ? Integer.parseInt(args[0]) : -1);
+        String fileContents = control.requestFile(args);
     }
 
 }

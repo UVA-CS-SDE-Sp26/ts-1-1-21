@@ -4,5 +4,5 @@
  */
 
 public interface ProgramCtrl {
-    String requestFile(int index);
+    String requestFile(String[] args);
 }
