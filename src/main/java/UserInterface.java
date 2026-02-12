@@ -43,7 +43,11 @@ public class UserInterface {
         //validate that it is a number
         //try and catch if changing to integer doesn't work
         try{
-            Integer.parseInt(fileID);
+            int id = Integer.parseInt(fileID);
+            //if the id is below one then throw an error
+            if (id < 1){
+                throw new IllegalArgumentException("Invalid File ID (must be greater than 0)");
+            }
         } catch (NumberFormatException error){
             throw new IllegalArgumentException("File ID must be a number");
         }
@@ -51,6 +55,10 @@ public class UserInterface {
 
     //function to call for team member c when no arguments are passed
     public static void printFileList(List<String> files){
+        //null check to throw before for loop
+        if (files == null){
+            throw new NullPointerException("There are no files accessible");
+        }
         for (int i=0; i < files.size(); i++){
             String fileID;
             //if the number is less or equal to 8 (because id is i+1) then add a 0 before
