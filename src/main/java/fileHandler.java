@@ -11,7 +11,7 @@ import java.io.FileReader;
 
 //Citing my code:https://www.w3schools.com/java/java_files_read.asp
 //https://docs.oracle.com/javase/8/docs/api/java/io/BufferedReader.html
-
+//https://docs.oracle.com/javase/8/docs/api/java/util/Map.Entry.html
 
 public class fileHandler implements fileHandlerInterface{
     private Map<String, String> data = new LinkedHashMap<>();
