@@ -13,16 +13,15 @@ import java.io.FileReader;
 //https://docs.oracle.com/javase/8/docs/api/java/io/BufferedReader.html
 //https://docs.oracle.com/javase/8/docs/api/java/util/Map.Entry.html
 
-public class fileHandler implements fileHandlerInterface{
+public class fileHandler implements fileHandlerInterface {
     private Map<String, String> data = new LinkedHashMap<>();
 
-    public fileHandler(){
-        data = new HashMap<>();
+    public fileHandler() {
+
         this.loadFiles();
     }
 
-
-    private void loadFiles(){ //loads files
+    public void loadFiles() { //loads files
         File folder = new File("data");
 
         if (!folder.exists() || !folder.isDirectory()) {
@@ -35,7 +34,7 @@ public class fileHandler implements fileHandlerInterface{
         if (files != null) {
             Arrays.sort(files);
             for (File file : files) {
-                if (file.isFile()&&!file.getName().startsWith(".")) {
+                if (file.isFile() && !file.getName().startsWith(".")) {
                     String formatted = String.format("%02d", count);
                     data.put(formatted, file.getName());
                     count++;
@@ -43,11 +42,12 @@ public class fileHandler implements fileHandlerInterface{
             }
         }
     }
+
     @Override
-    public String readFiles(){ //Reads all files in the hash (By insert order)
+    public String readFiles() { //Reads all files in the hash (By insert order)
 
         String str = "";
-        for(Map.Entry<String, String> element: data.entrySet()){
+        for (Map.Entry<String, String> element : data.entrySet()) {
             String key = element.getKey();
             String val = element.getValue();
             str += key + " " + val + "\n";
@@ -56,25 +56,57 @@ public class fileHandler implements fileHandlerInterface{
     }// Returns every file name in the data folder
 
     @Override
-    public String readFileData(String userIn){ //Reads in data by ID (STARTS FROM 00)
+    public String readFileData(UiRequest user) {
+        String userIn = user.getFileID();
+        String defaultKey;
+        String fileCipherKey;
+
+        File keyFile = new File("ciphers", "key.txt");
+
+        try(BufferedReader keyReader = new BufferedReader(new FileReader(keyFile))) {
+            defaultKey = keyReader.readLine();   //first line
+            fileCipherKey = keyReader.readLine(); //second line
+
+            if (defaultKey == null || fileCipherKey == null) {
+                return "Key file is corrupted.";
+            }
+
+        }catch (IOException e){
+            return "Error reading the default key file.";
+        }
+
+        String finalCipherKey;
+        String userCipherKey = user.getCipherKey();
+
+        if(userCipherKey != null){ //This if statement determines which key we're using
+            finalCipherKey = userCipherKey;
+        }else{
+            finalCipherKey = fileCipherKey;
+        }
+        //Check if file ID exists
         String fileName = data.get(userIn);
-        if (fileName==null) {
+        if(fileName == null) {
             return "Invalid file number.";
         }
 
-        File file = new File("data", fileName);
-        String content = "";
+        File file = new File("data", fileName); //Gets the file from data method
+        StringBuilder content = new StringBuilder(); //contents of ciphered data file
 
-        try(BufferedReader br = new BufferedReader(new FileReader(file))){
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String line;
-            while((line=br.readLine()) != null){
-                content+=(line)+"\n";
+            while ((line = br.readLine()) != null) {
+                content.append(line).append("\n"); //Add
             }
+        }catch (IOException e){
+            return "Error reading file";
         }
-        catch (IOException e){
-            return "Error reading the file.";
-        }
-        return content;
-    }
 
+        //decrypt
+        Cipher deCiphered = new Cipher(defaultKey, finalCipherKey);
+        return deCiphered.decipher(content.toString());
+    }
 }
+
+
+
+
