@@ -5,5 +5,5 @@
 
 public interface ProgramControlInterface {
     String requestFile(String[] args);
-    void listFiles();
+    String listFiles();
 }

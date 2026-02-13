@@ -12,7 +12,7 @@ public interface fileHandlerInterface {
 
     String readFiles();
 
-    String readFileData(String userIn);//Reads in the data
+    String readFileData(UiRequest user);//Reads in the data
 
 
 

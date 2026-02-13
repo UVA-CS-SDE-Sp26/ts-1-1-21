@@ -1,4 +1,5 @@
-//You are responsible for the part of the
+Prompt:
+You are responsible for the part of the
 problem that reads data files.
 The program should expect files in a folder named data (in the same directory of the program, or in the root of your project folder.)
 When a request for a file is received,
@@ -22,7 +23,7 @@ String filePath;
 
 /////Methods/////
 -getFileName(); String // Returns the file name of the files
--toString(); String // Returns every file in the data folder
+-readFiles(); String // Returns every file in the data folder
 -readFileData(); String // Returns the data of the file.
 
 
