@@ -2,19 +2,19 @@
  * @author Dimash Adikhan jyv8md
  * 2/9/2026
  */
-
+//Citing my code:https://www.w3schools.com/java/java_files_read.asp
+//https://docs.oracle.com/javase/8/docs/api/java/io/BufferedReader.html
+//https://docs.oracle.com/javase/8/docs/api/java/util/Map.Entry.html
 import java.util.*;
 import java.io.File;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.FileReader;
 
-//Citing my code:https://www.w3schools.com/java/java_files_read.asp
-//https://docs.oracle.com/javase/8/docs/api/java/io/BufferedReader.html
-//https://docs.oracle.com/javase/8/docs/api/java/util/Map.Entry.html
+
 
 public class fileHandler implements fileHandlerInterface {
-    private Map<String, String> data = new LinkedHashMap<>();
+    private Map<Integer, String> data = new LinkedHashMap<>(); //holds key value pairs
 
     public fileHandler() {
 
@@ -22,6 +22,7 @@ public class fileHandler implements fileHandlerInterface {
     }
 
     public void loadFiles() { //loads files
+        data.clear();
         File folder = new File("data");
 
         if (!folder.exists() || !folder.isDirectory()) {
@@ -36,7 +37,7 @@ public class fileHandler implements fileHandlerInterface {
             for (File file : files) {
                 if (file.isFile() && !file.getName().startsWith(".")) {
                     String formatted = String.format("%02d", count);
-                    data.put(formatted, file.getName());
+                    data.put(count, file.getName());
                     count++;
                 }
             }
@@ -45,19 +46,23 @@ public class fileHandler implements fileHandlerInterface {
 
     @Override
     public String readFiles() { //Reads all files in the hash (By insert order)
-
-        String str = "";
-        for (Map.Entry<String, String> element : data.entrySet()) {
-            String key = element.getKey();
+        StringBuilder str = new StringBuilder(); // Using StringBuilder is better for performance in loops
+        for (Map.Entry<Integer, String> element : data.entrySet()) {
+            Integer key = element.getKey();
             String val = element.getValue();
-            str += key + " " + val + "\n";
+            str.append(String.format("%02d %s\n", key, val));
         }
-        return str;
+        return str.toString();
     }// Returns every file name in the data folder
 
     @Override
     public String readFileData(UiRequest user) {
-        String userIn = user.getFileID();
+        int fileId;
+        try {
+            fileId = Integer.parseInt(user.getFileID());
+        } catch (NumberFormatException e) {
+            return "Invalid input: Please enter a numeric file ID.";
+        }
         String defaultKey;
         String fileCipherKey;
 
@@ -78,30 +83,29 @@ public class fileHandler implements fileHandlerInterface {
         String finalCipherKey;
         String userCipherKey = user.getCipherKey();
 
-        if(userCipherKey != null){ //This if statement determines which key we're using
+        if(userCipherKey != null&&!userCipherKey.equals("")){ //This if statement determines which key we're using
             finalCipherKey = userCipherKey;
         }else{
             finalCipherKey = fileCipherKey;
         }
-        //Check if file ID exists
-        String fileName = data.get(userIn);
-        if(fileName == null) {
+        //Check if file ID exists (01, 02, 03 etc).
+        String fileName = data.get(fileId);
+        if (fileName == null) {
             return "Invalid file number.";
         }
-
         File file = new File("data", fileName); //Gets the file from data method
         StringBuilder content = new StringBuilder(); //contents of ciphered data file
 
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = br.readLine()) != null) {
-                content.append(line).append("\n"); //Add
+                content.append(line).append("\n"); //Add content of ciphered data file
             }
         }catch (IOException e){
             return "Error reading file";
         }
 
-        //decrypt
+        //decipher
         Cipher deCiphered = new Cipher(defaultKey, finalCipherKey);
         return deCiphered.decipher(content.toString());
     }
