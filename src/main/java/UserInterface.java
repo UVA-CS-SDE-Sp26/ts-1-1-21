@@ -37,7 +37,7 @@ public class UserInterface {
         }
         //check the length to validate that it is passed in as a string with length of two
         //this can change if project requirements don't need to specify a format like "01"
-        if (fileID.length() != 2){
+        if (fileID.length() > 0 && fileID.length() < 3){
             throw new IllegalArgumentException("Invalid File ID (Length)");
         }
         //validate that it is a number
