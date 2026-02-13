@@ -81,14 +81,17 @@ public class Cipher {
 
     // the decipher method
     public String decipher(String input){
+        //checks for null input
         if (input == null){
             throw new IllegalArgumentException("Cannot decipher null string");
         }
-        String result = "";
+        String result = ""; //stores the deciphered string
+
         for (int i =0; i < input.length(); i++){
             char character = input.charAt(i);
             int index = cipher.indexOf(character);
 
+            //adds the character to the result if it exists in the cipher
             if (index >= 0){
                 result += actual.charAt(index);
             } else{
