@@ -20,9 +20,17 @@ ProgramControl.java
         Query FileHandler for files list
         Print out files list, displaying indices for each
 -------------
-Tests: //TO DO
-1. No input, multiple files: check that requestFileWithoutIndex runs as intended, prints files list
-2. -1 index
-3. 0 index
-4. 3 index
-5. MAX index
+Tests:
+-requestFile:
+    Cases:
+        -empty args - returns listFiles()
+        -1 args (valid) - return ciphered contents
+            -invalid arg (<1, not an int, empty) - throw IllegalArgument Exception
+        -2 args (valid) - return deciphered contents
+            -first arg invalid (<1, not an int, empty) - throw IllegalArgumentException
+            -second arg invalid (empty String) - return ciphered contents
+        -more than 2 args - throw IllegalArgumentException
+ -listFiles
+    Cases:
+        -call to fileHandler returns a String - return that String
+        -call to fileHandler returns null - return null
