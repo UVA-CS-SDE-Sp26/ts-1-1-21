@@ -1,3 +1,10 @@
+/**
+ * CipherTest.java
+ * @author Ishmam Abtahi zqx9tm
+ * Contains JUnit tests for the class ProgramControl
+ */
+
+
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

@@ -1,3 +1,9 @@
+/**
+ * Cipher class
+ * @author Ishmam Abtahi zqx9tm
+ * 2/9/2026
+ */
+
 public class Cipher {
 
 
