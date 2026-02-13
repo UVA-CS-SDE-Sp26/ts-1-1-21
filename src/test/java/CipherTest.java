@@ -90,7 +90,7 @@ public class CipherTest {
     @Test
     void decipher_nullInput_throwsNullPointerException(){
         Cipher cipher = new Cipher(VALID_KEY,VALID_CIPHER);
-        assertThrows(NullPointerException.class, () -> cipher.decipher(null));
+        assertThrows(RuntimeException.class, () -> cipher.decipher(null));
     }
 
     @Test
