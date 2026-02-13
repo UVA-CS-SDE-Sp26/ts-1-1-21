@@ -1,7 +1,7 @@
 /**
  * CipherTest.java
  * @author Ishmam Abtahi zqx9tm
- * Contains JUnit tests for the class ProgramControl
+ * Contains JUnit tests for the class Cipher
  */
 
 
