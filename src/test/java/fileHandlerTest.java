@@ -1,64 +1,59 @@
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-
-import java.io.*;
+import org.mockito.junit.jupiter.MockitoExtension;
+import java.io.IOException;
 import java.nio.file.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+//Using GPT-5 for assistance in testing cases
 
+@ExtendWith(MockitoExtension.class)
 class FileHandlerTest {
-    private static final String DATA_FOLDER = "data";
-    // Assuming the class containing your method is named FileService
-    private fileHandler fileService;
-
+    private static final Path DATA_FOLDER = Paths.get("data");
+    private static final Path CIPHER_FOLDER = Paths.get("ciphers");
+    private static final Path KEY_FILE = CIPHER_FOLDER.resolve("key.txt");
     @Mock
     private UiRequest mockRequest;
 
     @BeforeEach
     void setUp() throws IOException {
-        Files.createDirectories(Paths.get(DATA_FOLDER));
-        fileService = new fileHandler();
-        // Since 'data' is used in your method, we simulate its behavior.
-        // If 'data' is a Map in your class, you might need to initialize it:
+        Files.createDirectories(DATA_FOLDER);
+        Files.createDirectories(CIPHER_FOLDER);
+        Files.writeString(KEY_FILE, "DEFAULTKEY\nFILEKEY\n");
     }
 
     @AfterEach
     void tearDown() throws IOException {
-        if (Files.exists(Paths.get(DATA_FOLDER))) {
-            Files.walk(Paths.get(DATA_FOLDER))
-                    .sorted((a, b) -> b.compareTo(a)) // delete children first
-                    .forEach(path -> {
-                        try {
-                            Files.delete(path);
-                        } catch (IOException ignored) {}
-                    });
+        deleteFolder(DATA_FOLDER);
+        deleteFolder(CIPHER_FOLDER);
+    }
+
+    private void deleteFolder(Path path) throws IOException {
+        if (Files.exists(path)) {
+            Files.walk(path).sorted((a, b) -> b.compareTo(a)).forEach(p -> {
+                try {Files.delete(p);
+                } catch (IOException ignored) {
+                }
+            });
         }
     }
 
     @Test
-    void testLoadFilesAndReadFilesCorrectOrdering() throws IOException {
-        Files.writeString(Paths.get(DATA_FOLDER, "b.txt"), "B");
-        Files.writeString(Paths.get(DATA_FOLDER, "a.txt"), "A");
-        Files.writeString(Paths.get(DATA_FOLDER, "c.txt"), "C");
-
-
+    void testLoadFilesAndReadFilesCorrectOrdering() throws IOException{
+        Files.writeString(DATA_FOLDER.resolve("textb.txt"),"B");
+        Files.writeString(DATA_FOLDER.resolve("texta.txt"),"A");
+        Files.writeString(DATA_FOLDER.resolve("textc.txt"),"C");
         fileHandler handler = new fileHandler();
-        String result = handler.readFiles();
-
-        //files should be sorted by index 01, 02, 03.
-        assertEquals(
-                "01 a.txt\n" +
-                        "02 b.txt\n" +
-                        "03 c.txt\n",
-                result
-        );
+        assertEquals("01 texta.txt\n02 textb.txt\n03 textc.txt\n",handler.readFiles());
     }
 
     @Test
     void testHiddenFilesAreIgnored() throws IOException {
-        Files.writeString(Paths.get(DATA_FOLDER, "visible.txt"), "Visible");
-        Files.writeString(Paths.get(DATA_FOLDER, ".hidden.txt"), "Hidden");
+        Files.writeString(DATA_FOLDER.resolve("visible.txt"), "Visible");
+        Files.writeString(DATA_FOLDER.resolve(".hidden.txt"), "Hidden");
 
         fileHandler handler = new fileHandler();
         String result = handler.readFiles();
@@ -68,36 +63,38 @@ class FileHandlerTest {
     }
 
     @Test
-    void testNoDataFolder() throws IOException { //Expected: delete
-        tearDown(); // delete folder before test
-
-        // Act
+    void testEmptyFolder(){
+        //Act on the data
         fileHandler handler = new fileHandler();
-        String result = handler.readFiles();
-
-        // Assert
-        assertEquals("", result); // no files loaded
+        //Assert statement
+        assertEquals("", handler.readFiles());
     }
 
     @Test
-    void testEmptyFolder() {
-        // Act
-        fileHandler handler = new fileHandler();
-        String result = handler.readFiles();
+    void testNoDataFolder() throws IOException {
+        tearDown();
 
-        // Assert
-        assertEquals("", result);
+        fileHandler handler = new fileHandler();
+
+        assertEquals("", handler.readFiles());
     }
 
     @Test
     void testReadFileData_InvalidFileID() {
-        // Arrange
-        when(mockRequest.getFileID()).thenReturn("99"); // ID not in the map
-
-        // Act
-        String result = fileService.readFileData(mockRequest);
-
-        // Assert
+        when(mockRequest.getFileID()).thenReturn("99");
+        when(mockRequest.getCipherKey()).thenReturn("");
+        fileHandler handler = new fileHandler();
+        String result = handler.readFileData(mockRequest);
         assertEquals("Invalid file number.", result);
     }
+
+    @Test
+    void testReadFileData_NonNumericID(){
+        when(mockRequest.getFileID()).thenReturn("abc");
+        fileHandler handler = new fileHandler();
+        String result = handler.readFileData(mockRequest);
+        assertEquals("Invalid input: Please enter a numeric file ID.", result);
+    }
+
+
 }
