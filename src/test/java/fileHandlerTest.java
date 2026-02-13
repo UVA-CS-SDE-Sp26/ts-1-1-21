@@ -1,14 +1,26 @@
 import org.junit.jupiter.api.*;
+import org.mockito.Mock;
+
 import java.io.*;
 import java.nio.file.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
+
 
 class FileHandlerTest {
     private static final String DATA_FOLDER = "data";
+    // Assuming the class containing your method is named FileService
+    private fileHandler fileService;
+
+    @Mock
+    private UiRequest mockRequest;
 
     @BeforeEach
     void setUp() throws IOException {
         Files.createDirectories(Paths.get(DATA_FOLDER));
+        fileService = new fileHandler();
+        // Since 'data' is used in your method, we simulate its behavior.
+        // If 'data' is a Map in your class, you might need to initialize it:
     }
 
     @AfterEach
@@ -75,5 +87,17 @@ class FileHandlerTest {
 
         // Assert
         assertEquals("", result);
+    }
+
+    @Test
+    void testReadFileData_InvalidFileID() {
+        // Arrange
+        when(mockRequest.getFileID()).thenReturn("99"); // ID not in the map
+
+        // Act
+        String result = fileService.readFileData(mockRequest);
+
+        // Assert
+        assertEquals("Invalid file number.", result);
     }
 }
