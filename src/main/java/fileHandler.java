@@ -36,7 +36,6 @@ public class fileHandler implements fileHandlerInterface {
             Arrays.sort(files);
             for (File file : files) {
                 if (file.isFile() && !file.getName().startsWith(".")) {
-                    String formatted = String.format("%02d", count);
                     data.put(count, file.getName());
                     count++;
                 }
@@ -58,6 +57,7 @@ public class fileHandler implements fileHandlerInterface {
     @Override
     public String readFileData(UiRequest user) {
         int fileId;
+        String keyPath;
         try {
             fileId = Integer.parseInt(user.getFileID());
         } catch (NumberFormatException e) {
@@ -66,7 +66,14 @@ public class fileHandler implements fileHandlerInterface {
         String defaultKey;
         String fileCipherKey;
 
-        File keyFile = new File("ciphers", "key.txt");
+        if(user.getCipherKey()!=null){
+            keyPath = user.getCipherKey();
+        }
+        else{
+            keyPath = "key.txt";
+        }
+
+        File keyFile = new File("ciphers", keyPath);
 
         try(BufferedReader keyReader = new BufferedReader(new FileReader(keyFile))) {
             defaultKey = keyReader.readLine();   //first line
@@ -80,14 +87,8 @@ public class fileHandler implements fileHandlerInterface {
             return "Error reading the default key file.";
         }
 
-        String finalCipherKey;
-        String userCipherKey = user.getCipherKey();
 
-        if(userCipherKey != null&&!userCipherKey.equals("")){ //This if statement determines which key we're using
-            finalCipherKey = userCipherKey;
-        }else{
-            finalCipherKey = fileCipherKey;
-        }
+
         //Check if file ID exists (01, 02, 03 etc).
         String fileName = data.get(fileId);
         if (fileName == null) {
@@ -106,7 +107,7 @@ public class fileHandler implements fileHandlerInterface {
         }
 
         //decipher
-        Cipher deCiphered = new Cipher(defaultKey, finalCipherKey);
+        Cipher deCiphered = new Cipher(defaultKey, fileCipherKey);
         return deCiphered.decipher(content.toString());
     }
 }
