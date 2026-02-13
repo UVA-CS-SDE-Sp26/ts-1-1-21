@@ -23,9 +23,6 @@ class ProgramControlTest {
     @Mock
     private fileHandler mockHandler;
 
-    @Mock
-    private ProgramControl mockControl;
-
     @BeforeEach
     public void setUp() {
         //set up mocks
