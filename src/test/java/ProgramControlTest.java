@@ -73,7 +73,7 @@ class ProgramControlTest {
         //        "listFiles() printed incorrect value to out");
     }
 
-    ////Testing requestFile()////
+    ////Testing requestFile(String[] args)////
     /* Cases:
     * empty args - returns listFiles()
     * 1 args (valid) - return ciphered contents
@@ -100,7 +100,7 @@ class ProgramControlTest {
                 "requestFile() failed to return the file list when no args were provided");
     }
 
-    //1 arg is passed
+    //1 valid arg is passed
     @Test
     void testRequestFileArg1Valid() {
         String fileContentsCiphered = "ciphertextxyz" ;
