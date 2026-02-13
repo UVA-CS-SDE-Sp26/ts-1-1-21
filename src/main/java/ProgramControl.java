@@ -15,17 +15,16 @@ public class ProgramControl implements ProgramControlInterface{
     @Override
     public String requestFile(String[] args) {
         if(args.length == 0) {
-            //if no args provided, print the list of files which can be selected
-            listFiles();
+            //if no args provided, return the list of files which can be selected
+            return listFiles();
         }
-        //pass the args to UserInterface to determine the file id and package as 'request'
+        //pass the args to UserInterface to determine the file id and cipher and package as 'request'
         UiRequest request = UserInterface.parseArgs(args);
-        //String decipheredContents = handler.readFileData(request);
-        return "";//decipheredContents;
+        return handler.readFileData(request);
     }
 
     //prints a list of available files
-    public void listFiles() {
-        System.out.println(handler.readFiles());
+    public String listFiles() {
+        return handler.readFiles();
     }
 }

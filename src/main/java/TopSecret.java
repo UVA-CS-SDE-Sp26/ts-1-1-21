@@ -4,12 +4,9 @@
 public class TopSecret {
 
     public static void main(String[] args) {
-        if(args.length > 1) {
-            System.out.println("Too many arguments");
-            java.lang.System.exit(1);
-        }
         ProgramControl control = new ProgramControl(new fileHandler());
         String fileContents = control.requestFile(args);
+        System.out.println(fileContents);
     }
 
 }
