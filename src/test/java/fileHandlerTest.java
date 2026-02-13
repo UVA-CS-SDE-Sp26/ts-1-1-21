@@ -5,7 +5,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.io.IOException;
 import java.nio.file.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 //Using GPT-5 for assistance in testing cases
@@ -82,7 +81,7 @@ class FileHandlerTest {
     @Test
     void testReadFileData_InvalidFileID() {
         when(mockRequest.getFileID()).thenReturn("99");
-        when(mockRequest.getCipherKey()).thenReturn("");
+
         fileHandler handler = new fileHandler();
         String result = handler.readFileData(mockRequest);
         assertEquals("Invalid file number.", result);
