@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class UserInterfaceTest {
     //IMPORTANT FOR ALL STRING PRINT TESTS
     //setup helper function so we can assert the values of our print tests
+    //Help from resource: https://www.baeldung.com/java-testing-system-out-println
     private String captureSysOut(Runnable action){
         //captures the original system.out so we can restore after test runs
         PrintStream original = System.out;
@@ -125,20 +126,21 @@ class UserInterfaceTest {
                 () -> UserInterface.validateFileID("")
         );
     }
-    @Test
-    void lengthShortValidateFileID() {
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> UserInterface.validateFileID("1")
-        );
-    }
-    @Test
-    void lengthLongValidateFileID() {
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> UserInterface.validateFileID("003")
-        );
-    }
+    //decided that all integer of file calls would pass - Ambiguous from what homework was saying
+//    @Test
+//    void lengthShortValidateFileID() {
+//        assertThrows(
+//                IllegalArgumentException.class,
+//                () -> UserInterface.validateFileID("1")
+//        );
+//    }
+//    @Test
+//    void lengthLongValidateFileID() {
+//        assertThrows(
+//                IllegalArgumentException.class,
+//                () -> UserInterface.validateFileID("003")
+//        );
+//    }
     @Test
     void spaceFormatValidateFileID() {
         assertThrows(
